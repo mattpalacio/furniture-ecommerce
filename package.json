@@ -6,6 +6,7 @@
   "dependencies": {
     "dotenv": "^8.2.0",
     "gatsby": "^2.24.85",
+    "gatsby-awesome-pagination": "^0.3.6",
     "gatsby-image": "^2.2.34",
     "gatsby-link": "^2.2.25",
     "gatsby-plugin-react-helmet": "^3.1.16",
@@ -16,7 +17,8 @@
     "node-sass": "^4.12.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "react-helmet": "^5.2.0"
+    "react-helmet": "^5.2.0",
+    "styled-components": "^5.2.1"
   },
   "keywords": [
     "gatsby"

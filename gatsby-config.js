@@ -1,8 +1,10 @@
-require("dotenv").config();
+require('dotenv').config({
+  path: `.env.${process.env.NODE_ENV}`,
+});
 
 module.exports = {
   siteMetadata: {
-    siteName: 'My Shop',
+    siteName: 'Furnitures',
   },
   plugins: [
     'gatsby-plugin-sass',
@@ -14,9 +16,12 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-snipcart',
       options: {
-        apiKey: 'OWE3MmZmMjQtNTk3Yi00OThhLWEwMmUtZDY4ZWM4NzIwYzZiNjM2NjM0Mzc1NzE0MTUwNzI1',
-        autopop: true
-      }
+        apiKey: process.env.GATSBY_SNIPCART_TOKEN,
+        autopop: false,
+        js: 'https://cdn.snipcart.com/themes/v3.0.27/default/snipcart.js',
+        jquery: false,
+        styles: 'https://cdn.snipcart.com/themes/v3.0.27/default/snipcart.css',
+      },
     },
   ],
-}
+};

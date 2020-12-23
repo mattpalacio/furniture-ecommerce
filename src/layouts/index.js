@@ -1,52 +1,179 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import Helmet from 'react-helmet'
-import Link from 'gatsby-link'
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import { useStaticQuery, graphql } from 'gatsby';
+import Link from 'gatsby-link';
+import Helmet from 'react-helmet';
+import styled, { createGlobalStyle } from 'styled-components';
 
-import '../style/index.scss'
+const Layout = ({ children }) => {
+  const data = useStaticQuery(graphql`
+    query CollectionsQuery {
+      collections: allDatoCmsCollection {
+        nodes {
+          id
+          name
+        }
+      }
+      site {
+        siteMetadata {
+          siteName
+        }
+      }
+    }
+  `);
 
-const Layout = ({ children, site }) => (
-  <div>
-    <Helmet title="Snipcart + DatoCMS + GatsbyJS Example" />
-    <div className="Container">
-      <div className="Header">
-        <div className="Wrap" >
-          <div className="Header__body">
-            <h1 className="Header__title">
-              <Link data-text={site.siteMetadata.siteName} to="/">
-                {site.siteMetadata.siteName}
-              </Link>
+  const [showNav, setShowNav] = useState(false);
+
+  return (
+    <>
+      <GlobalStyle />
+      <Helmet title="Furnitures Online Store" />
+      <LayoutContainer>
+        <Header>
+          <div>
+            <h1>
+              <StyledLink to="/">{data.site.siteMetadata.siteName}</StyledLink>
             </h1>
-            <div className="Header__summary snipcart-summary snipcart-checkout">
-              <div className="Header__summary__title">
-                🛍 MY CART 🛍
-              </div>
-              <div className="Header__summary__line">
-                Number of items: <span className="snipcart-total-items"></span>
-              </div>
-              <div className="Header__summary__line">
-                Total price: <span className="snipcart-total-price"></span>
-              </div>
-            </div>
+
+            <Nav>
+              <button onClick={() => setShowNav((prevState) => !prevState)}>
+                Collections
+              </button>
+
+              {showNav && (
+                <nav>
+                  <ul>
+                    {data.collections.nodes.map(({ id, name }) => (
+                      <li key={id}>
+                        <Link to={`/collection/${name.toLowerCase()}`}>
+                          {name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </nav>
+              )}
+            </Nav>
+
+            <button className="snipcart-summary snipcart-checkout">
+              In Cart: <span className="snipcart-items-count"></span>
+            </button>
           </div>
-        </div>
-      </div>
-      <div className="Wrap" >
-        {children}
-      </div>
-      <div className="Wrap" >
-        <div className="Footer">
-          This website is just an example project to demonstrate how you can 
-          integrate <a href="https://www.gatsbyjs.org/">Gatsby</a>, <a href="https://snipcart.com/">Snipcart</a> and <a href="https://www.datocms.com">DatoCMS</a>.
-        </div>
-      </div>
-    </div>
-  </div>
-)
+        </Header>
+        <main>{children}</main>
+      </LayoutContainer>
+    </>
+  );
+};
 
 Layout.propTypes = {
   children: PropTypes.func,
-}
+};
 
-export default Layout
+export default Layout;
 
+const GlobalStyle = createGlobalStyle`
+  *, *::before, *::after {
+    margin: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'PT Serif', serif;
+  }
+
+  button {
+    border: none;
+    font-family: 'PT Sans', sans-serif;
+    font-size: 1.1rem;
+    text-transform: capitalize;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+  }
+`;
+
+const LayoutContainer = styled.div`
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: calc((100vw - 1000px) / 2) [main-start] 1fr [main-end] calc(
+      (100vw - 1000px) / 2
+    );
+  grid-template-rows: [header-start] 5em [header-end] auto;
+
+  main {
+    grid-column: main-start / main-end;
+    padding: 1em 2em;
+  }
+`;
+
+const Header = styled.header`
+  border-bottom: 1px solid #000;
+  grid-column: 1 / -1;
+  grid-row: header-start / header-end;
+
+  & > div {
+    max-width: 1000px;
+    height: 100%;
+    padding: 1em 2em;
+    margin: auto;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+  }
+
+  h1 {
+    margin-right: auto;
+    line-height: 1;
+  }
+
+  button {
+    padding: 0;
+    background: transparent;
+
+    &:last-child {
+      margin-left: 1em;
+    }
+  }
+`;
+
+const Nav = styled.div`
+  position: relative;
+
+  nav {
+    width: 100%;
+    background: white;
+    position: absolute;
+    top: 30px;
+    z-index: 5;
+  }
+
+  ul {
+    padding: 0.2em 0.6em;
+    list-style: none;
+    text-align: right;
+  }
+
+  li {
+    font-size: 1.2rem;
+
+    &:not(:last-child) {
+      margin-bottom: 0.2em;
+    }
+  }
+
+  a {
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+`;
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
+
+  &:visited {
+    color: inherit;
+  }
+`;
