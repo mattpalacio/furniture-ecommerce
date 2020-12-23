@@ -13,6 +13,7 @@
     "gatsby-plugin-sass": "^2.1.24",
     "gatsby-plugin-sharp": "^2.3.5",
     "gatsby-plugin-snipcart": "^1.1.2",
+    "gatsby-plugin-styled-components": "^3.7.0",
     "gatsby-source-datocms": "^2.2.4",
     "node-sass": "^4.12.0",
     "react": "^16.12.0",
