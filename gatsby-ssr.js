@@ -1,7 +1,11 @@
-/**
- * Implement Gatsby's SSR (Server Side Rendering) APIs in this file.
- *
- * See: https://www.gatsbyjs.org/docs/ssr-apis/
- */
+const React = require('react');
 
- // You can delete this file if you're not using it
+exports.onRenderBody = ({ setPostBodyComponents }, pluginOptions) => {
+  setPostBodyComponents([
+    <div
+      key={pluginOptions.key ? pluginOptions.key : 'portal'}
+      id={pluginOptions.id ? pluginOptions.id : 'portal'}>
+      {pluginOptions.text}
+    </div>,
+  ]);
+};

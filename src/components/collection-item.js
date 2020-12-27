@@ -76,10 +76,7 @@ const CardOverlay = styled.div`
   background: hsla(0, 0%, 100%, 0.3);
   display: none;
   position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  inset: 0;
   z-index: 2;
 
   div {

@@ -49,7 +49,7 @@ exports.createPages = ({ graphql, actions }) => {
             items: collectionItems,
             component: path.resolve('./src/templates/collection-index.js'),
             itemsPerPage: 6,
-            pathPrefix: `/collection/${collection.name.toLowerCase()}`,
+            pathPrefix: `/collections/${collection.name.toLowerCase()}`,
             context: {
               collection: collection.name,
             },
@@ -61,7 +61,8 @@ exports.createPages = ({ graphql, actions }) => {
           items: products,
           component: path.resolve('./src/templates/collection-index.js'),
           itemsPerPage: 6,
-          pathPrefix: '/',
+          pathPrefix: ({ pageNumber, numberOfPages }) =>
+            pageNumber === 0 ? '/' : '/all',
         });
       })
     );
